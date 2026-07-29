@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/api';
+// Use Vite env var for API base URL so frontend can target deployed backend.
+// Set VITE_API_BASE_URL in Vercel to https://your-backend.vercel.app/api
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

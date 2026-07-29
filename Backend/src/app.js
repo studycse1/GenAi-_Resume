@@ -8,7 +8,12 @@ const app = express();
 
 // CORS middleware
 app.use((req, res, next) => {
-  const allowedOrigins = new Set(['http://localhost:5173', 'http://localhost:5174']);
+  const allowedOrigins = new Set([
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://gen-ai-resume-uugd.vercel.app', // frontend production
+    'https://gen-ai-resume-sandy.vercel.app', // backend (if needed for routing)
+  ]);
   const origin = req.headers.origin;
 
   if (origin && allowedOrigins.has(origin)) {
