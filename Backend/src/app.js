@@ -8,25 +8,32 @@ const app = express();
 
 // CORS middleware
 app.use((req, res, next) => {
+  const configuredOrigins = (process.env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
   const allowedOrigins = new Set([
     'http://localhost:5173',
     'http://localhost:5174',
-    'https://gen-ai-resume-uugd.vercel.app', // frontend production
-    'https://gen-ai-resume-sandy.vercel.app', // backend (if needed for routing)
+    ...configuredOrigins,
   ]);
+
   const origin = req.headers.origin;
 
   if (origin && allowedOrigins.has(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
+    res.header('Vary', 'Origin');
   }
 
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie');
 
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
+
   next();
 });
 
